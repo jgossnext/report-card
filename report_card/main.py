@@ -100,9 +100,25 @@ class Analysis:
                             title='Percent of 4th graders at or above basic math')
         fig.show()
 
+    @staticmethod
+    def compute_ratio(report_card_df: pd.DataFrame = None, home_price_df: pd.DataFrame = None):
+        analysis_df = report_card_df.merge(home_price_df, left_on='jurisdiction', right_on='state' ,
+                             how='inner')
+        analysis_df['ratio'] = (analysis_df.value / analysis_df.amount) * 100000
+        print(analysis_df.sort_values(by='ratio')[['state', 'ratio']].head(10))
+        print(analysis_df.sort_values(by='ratio')[['state', 'ratio']].tail(10))
 
-# card = ReportCard()
-# print(card.compile_math_prof())
+        fig = px.choropleth(analysis_df,
+                            locations='jurisdiction',
+                            locationmode='USA-states',
+                            color='ratio',
+                            hover_name='jurisdiction',
+                            color_continuous_scale='Cividis',
+                            scope='usa',
+                            labels={'ratio': 'math basic competency percentage point per % of home price'},
+                            title='Ratio of student math basic competency to median home price')
+        fig.show()
+
 
 if __name__ == '__main__':
     home_prices = HomePrices().compile_homeprices()
@@ -110,3 +126,5 @@ if __name__ == '__main__':
     analysis.plot_home_prices(home_price_df=home_prices)
     math_df = ReportCard().compile_math_prof()
     analysis.plot_test_scores(report_card_df=math_df)
+    analysis.compute_ratio(report_card_df=math_df, home_price_df=home_prices)
+

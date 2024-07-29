@@ -7,7 +7,7 @@ class ReportCard:
     def __init__(self):
         self.grade = '4'
         self.year = '2022'
-        self.stattype = 'ALC:AB'
+        self.stattype = 'ALC:AP'
         self.variable = 'TOTAL'
         self.subject = 'mathematics'
         self.subscale = 'MRPRCM'
@@ -20,7 +20,6 @@ class ReportCard:
           "WV", "WY", "DC"]
     def get_report_card(self, state: str = 'NT') -> dict:
         formatted_url = self.url + f'&jurisdiction={state}'
-        print(formatted_url)
         response = requests.get(formatted_url)
         return response.json()
 
@@ -30,6 +29,7 @@ class ReportCard:
         return res
 
     def compile_math_prof(self) -> pd.DataFrame:
+        logging.info('Retrieving NAEP data.')
         all_responses = []
         for state in self.states:
             try:

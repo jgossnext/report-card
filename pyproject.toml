@@ -2,7 +2,7 @@
 name = "report-card"
 version = "0.1.0"
 description = ""
-authors = ["justin <justin.g@next-insurance.com>"]
+authors = ["justin"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
