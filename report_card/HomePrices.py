@@ -23,6 +23,7 @@ class HomePrices:
                     row.append(td.text.strip())
                 rows.append(row)
         home_price_df = pd.DataFrame(rows, columns=headers)
+        print(home_price_df.head())
         return home_price_df
 
     @staticmethod

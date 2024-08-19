@@ -39,5 +39,6 @@ class ReportCard:
                 continue
             clean_res = self.clean_report_card(res)
             all_responses.append(clean_res)
+        print(pd.DataFrame(all_responses))
 
         return pd.DataFrame(all_responses)

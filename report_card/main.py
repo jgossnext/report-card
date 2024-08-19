@@ -71,7 +71,7 @@ class Analysis:
             "VI": "U.S. Virgin Islands",
         }
 
-    def plot_home_prices(self, home_price_df: pd.DataFrame = None):
+    def plot_home_prices(self, home_price_df: pd.DataFrame = None) -> None:
         name_to_abbreviation = {v: k for k, v in self.abbreviation_to_name.items()}
         home_price_df['state'] = home_price_df['State or territory'].map(name_to_abbreviation)
 
@@ -88,7 +88,7 @@ class Analysis:
         fig.show()
 
     @staticmethod
-    def plot_test_scores(report_card_df: pd.DataFrame = None):
+    def plot_test_scores(report_card_df: pd.DataFrame = None) -> None:
         fig = px.choropleth(report_card_df,
                             locations='jurisdiction',
                             locationmode='USA-states',
@@ -96,17 +96,18 @@ class Analysis:
                             hover_name='jurisdiction',
                             color_continuous_scale='Blues',
                             scope='usa',
-                            labels={'value': '% basic compentency at math'},
-                            title='Percent of 4th graders at or above basic math')
+                            labels={'value': '% proficient compentency at math'},
+                            title='Percent of 4th graders at or above proficient in math')
         fig.show()
 
     @staticmethod
-    def compute_ratio(report_card_df: pd.DataFrame = None, home_price_df: pd.DataFrame = None):
+    def compute_ratio(report_card_df: pd.DataFrame = None, home_price_df: pd.DataFrame = None) -> None:
         analysis_df = report_card_df.merge(home_price_df, left_on='jurisdiction', right_on='state' ,
                              how='inner')
         analysis_df['ratio'] = (analysis_df.value / analysis_df.amount) * 100000
         print(analysis_df.sort_values(by='ratio')[['state', 'ratio']].head(10))
         print(analysis_df.sort_values(by='ratio')[['state', 'ratio']].tail(10))
+        print(analysis_df[['value', 'amount']].corr())
 
         fig = px.choropleth(analysis_df,
                             locations='jurisdiction',
@@ -115,8 +116,8 @@ class Analysis:
                             hover_name='jurisdiction',
                             color_continuous_scale='Cividis',
                             scope='usa',
-                            labels={'ratio': 'math basic competency percentage point per % of home price'},
-                            title='Ratio of student math basic competency to median home price')
+                            labels={'ratio': 'math proficient competency percentage point per % of home price'},
+                            title='Ratio of student math proficient competency to median home price')
         fig.show()
 
 
